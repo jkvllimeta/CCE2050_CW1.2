@@ -5,6 +5,7 @@
  */
 package cce2050_cw2;
 
+import java.util.ArrayList;
 /**
  *
  * @author Joseph
@@ -19,7 +20,8 @@ public class transactionRun extends Thread {
     
     public void run(){
         
-        double[] runTransactionList = bankUser.getTransactionList();
+        //double[] runTransactionList = bankUser.getTransactionList();
+        ArrayList <Double> runTransactionList = bankUser.getTransactionArrayList();
         BankAccount bA = bankUser.getAccount();
         
         for(double transaction : runTransactionList){

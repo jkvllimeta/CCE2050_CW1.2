@@ -17,6 +17,7 @@ public class User {
     private String surname;
     private BankAccount bankAccount;
     private double[] transactionList;
+    private ArrayList<Double> transactionArrayList = new ArrayList<>();
     
     
 
@@ -27,6 +28,14 @@ public User (String n, String s, BankAccount bA, double[] tL){
     this.surname = s;
     this.bankAccount = bA;
     this.transactionList = tL;
+}
+
+public User (String n, String s, BankAccount bA, ArrayList<Double> tL){
+    
+    this.name = n;
+    this.surname = s;
+    this.bankAccount = bA;
+    this.transactionArrayList = tL;
 }
 
 public String getName(){
@@ -44,6 +53,12 @@ public String getSurname(){
 public double[] getTransactionList(){
     
     return transactionList;
+    
+}
+
+public ArrayList<Double> getTransactionArrayList(){
+    
+    return transactionArrayList;
     
 }
 

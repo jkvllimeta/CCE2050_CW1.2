@@ -41,6 +41,19 @@ public class BankAccount {
         
     }
     
+    public void setAccountNo(long acctNo){
+        
+        this.accountNo = acctNo;
+        
+    }
+    
+    public void setAccountBalance(double acctBal){
+        
+        this.accountBalance = acctBal;
+        
+    }
+    
+    
     synchronized public void deposit(double value, User u){
         
         this.accountBalance += value;
@@ -51,13 +64,17 @@ public class BankAccount {
     }
     
     synchronized public void withdraw(double value, User u){
+        try{
         if ((-value) <= this.accountBalance){
         this.accountBalance -= (-value);
         System.out.println("User " + u.getName() + " " + u.getSurname() + " has withdrawn " + "£" + -value + " from the account. " + "The current account balance is " + this.accountBalance + "\n");
         //System.out.println("The current account balance is " + this.accountBalance);
         } else {
-            System.out.println("Insufficient funds. Withdrawal cannot proceed. Terminating program.");
-            System.exit(0);
+            System.out.println("Insufficient funds. " + u.getName() + " " + u.getSurname() + "'s withdrawal of " + "£" + -value + "cannot be processed. Continuing to next transaction.");
+
+        }
+        } catch(Exception e){
+           
         }
         //System.out.println(" ");
     }
