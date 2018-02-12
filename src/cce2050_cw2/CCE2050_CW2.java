@@ -139,11 +139,47 @@ public class CCE2050_CW2 extends Thread{
                         System.out.println("User " + hSchrader.getName() + " " + hSchrader.getSurname() + " has been created successfully" + "\n");
                         transactionThreads.add(hankSchraderThread);
                         break;
-                }   
-            
-            
+                }
+                
                 createUser();
+                
+            
+            /*case '2':
+                int transactionIndex = 0;
+                String newUserFirstName;
+                String newUserSurname;
+                double [] newTransactionList;
+                char whileChoice;
+                
+                
+                System.out.println("Please enter the first name of the User: ");
+                newUserFirstName = s.next();
+                
+                System.out.println("Please enter the surname of the User: ");
+                newUserSurname = s.next();
+                
+                System.out.println("Please enter your first transaction: ");
+                System.out.println("Positive no = Deposit, Negative no = Withdraw ")
+                newTransactionList[transactionIndex] = s.nextInt();
+                
+                whileChoice = s.next().toLowerCase().charAt(0);
+                
+                while(whileChoice == 'y'){
+                System.out.println("Please enter the surname of the User: ");
+                newUserSurname = s.next();
+                System.out.println("Would you like to add another transaction?: ");
+                System.out.println("Y/N?");
+                whileChoice = s.next().toLowerCase().charAt(0);
+                }
+                
+                User "newUserFirstName+transactionIndex" = new User(newUserFirstName, newUserSurname, simAccount, userTransactions[3]);
+                
+                System.out.println("User Account " + newUserFirstName + " " + newUserSurname + " created successfully.");
+                
+                break;*/
+                
         }
+        Menu();
     }
     
     public static void createBankAccount(){
