@@ -41,7 +41,7 @@ public class BankAccount {
         
     }
     
-    public void deposit(double value, User u){
+    synchronized public void deposit(double value, User u){
         
         this.accountBalance += value;
         System.out.println("User " + u.getName() + " " + u.getSurname() + " has deposited " + "£" + value + " into the account. " + "The current account balance is " + this.accountBalance + "\n");
@@ -50,7 +50,7 @@ public class BankAccount {
         
     }
     
-    public void withdraw(double value, User u){
+    synchronized public void withdraw(double value, User u){
         if ((-value) <= this.accountBalance){
         this.accountBalance -= (-value);
         System.out.println("User " + u.getName() + " " + u.getSurname() + " has withdrawn " + "£" + -value + " from the account. " + "The current account balance is " + this.accountBalance + "\n");
