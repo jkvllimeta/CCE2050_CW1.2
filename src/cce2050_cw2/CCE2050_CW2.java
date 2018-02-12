@@ -6,6 +6,9 @@
 package cce2050_cw2;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 /**
  *
  * @author Joseph
@@ -19,19 +22,36 @@ public class CCE2050_CW2 extends Thread{
    static transactionRun walterWhiteThread;
    static transactionRun jessiePinkmanThread;
    static transactionRun hankSchraderThread; 
-   static double[] userTransactions[] = {
+   /*static double[] userTransactions[] = {
        {50,10,-20,10,-20,20,10,50,-10,10,-10,50},
        {20,20,-20,50,-20,10,50,50,-20,10,10},
        {50,10,10,-10,-10,50,20,10,20},
        {50,10,-20,20,10,-20}
-   };
+   };*/
    
+   //static ArrayList<ArrayList<Double>> userTransactionAL = new ArrayList<ArrayList<Double>>();
+   static ArrayList<Double> saulTransactions = new ArrayList<Double>(Arrays.asList
+   ((double)50,(double)10,(double)-20,(double)10,(double)-20,(double)20,(double)10,(double)50,(double)-10,(double)10,(double)-10,(double)50));
+   static ArrayList<Double> walterTransactions = new ArrayList<Double>(Arrays.asList
+   ((double)20,(double)20,(double)-20,(double)50,(double)-20,(double)10,(double)50,(double)50,(double)-20,(double)10,(double)10));
+   static ArrayList<Double> jessieTransactions = new ArrayList<Double>(Arrays.asList
+   ((double)50,(double)10,(double)10,(double)-10,(double)-10,(double)50,(double)20,(double)10,(double)20));
+   static ArrayList<Double> hankTransactions = new ArrayList<Double>(Arrays.asList
+   ((double)50,(double)10,(double)-20,(double)20,(double)10,(double)-20));
+   
+   static ArrayList<ArrayList<Double>> userTransactionAL = 
+           new ArrayList<ArrayList<Double>>(Arrays.asList(saulTransactions, walterTransactions,jessieTransactions,hankTransactions));
    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        //
+        //saulTransactions.add(50);
+        //
+
+        
         while(true){
         Menu();
         }
@@ -71,10 +91,18 @@ public class CCE2050_CW2 extends Thread{
                 
                 //Menu();
                 for (transactionRun tThread : transactionThreads){
-                tThread.start();
+                    
+                    tThread.start();
+                    while (true) {
+                        try {
+                            tThread.join();
+                            break;
+                        } catch (InterruptedException e) {
+                                e.printStackTrace();
+                        }
                 }
-                
-                break;
+                }
+                        Menu();
                 
             case '4':
                 System.exit(0);
@@ -103,12 +131,13 @@ public class CCE2050_CW2 extends Thread{
                 System.out.println("2. Create Walter White");
                 System.out.println("3. Create Jessie Pinkman");
                 System.out.println("4. Create Hank Schrader");
+                System.out.println("5. Create All");
                 
                 ch3 = s.next().charAt(0);
                 
                 switch(ch3){
                     case '1':
-                        User sGoodman = new User("Saul", "Goodman", simAccount, userTransactions[0]);
+                        User sGoodman = new User("Saul", "Goodman", simAccount, saulTransactions);
                         saulGoodmanThread = new transactionRun(sGoodman);
                         System.out.println("User " + sGoodman.getName() + " " + sGoodman.getSurname() + " has been created successfully" + "\n");
                         transactionThreads.add(saulGoodmanThread);
@@ -118,7 +147,7 @@ public class CCE2050_CW2 extends Thread{
                     
                     case '2':
                         
-                        User wWhite = new User("Walter", "White", simAccount, userTransactions[1]);
+                        User wWhite = new User("Walter", "White", simAccount, walterTransactions);
                         walterWhiteThread = new transactionRun(wWhite);
                         System.out.println("User " + wWhite.getName() + " " + wWhite.getSurname() + " has been created successfully" + "\n");
                         transactionThreads.add(walterWhiteThread);
@@ -126,7 +155,7 @@ public class CCE2050_CW2 extends Thread{
                         
                     case '3':
                         
-                        User jPinkman = new User("Jessie", "Pinkman", simAccount, userTransactions[2]);
+                        User jPinkman = new User("Jessie", "Pinkman", simAccount, jessieTransactions);
                         jessiePinkmanThread = new transactionRun(jPinkman);
                         System.out.println("User " + jPinkman.getName() + " " + jPinkman.getSurname() + " has been created successfully" + "\n");
                         transactionThreads.add(jessiePinkmanThread);
@@ -134,23 +163,26 @@ public class CCE2050_CW2 extends Thread{
                         
                     case '4':
                         
-                        User hSchrader = new User("Hank", "Schrader", simAccount, userTransactions[3]);
+                        User hSchrader = new User("Hank", "Schrader", simAccount, hankTransactions);
                         hankSchraderThread = new transactionRun(hSchrader);
                         System.out.println("User " + hSchrader.getName() + " " + hSchrader.getSurname() + " has been created successfully" + "\n");
                         transactionThreads.add(hankSchraderThread);
                         break;
+                    
+                    //case '5':
+                        
                 }
                 
                 createUser();
                 
             
-            /*case '2':
+            case '2':
                 int transactionIndex = 0;
                 String newUserFirstName;
                 String newUserSurname;
-                double [] newTransactionList;
+                ArrayList<Double> newTransactionList = new ArrayList<Double>();
                 char whileChoice;
-                
+                transactionRun userThread;
                 
                 System.out.println("Please enter the first name of the User: ");
                 newUserFirstName = s.next();
@@ -159,24 +191,34 @@ public class CCE2050_CW2 extends Thread{
                 newUserSurname = s.next();
                 
                 System.out.println("Please enter your first transaction: ");
-                System.out.println("Positive no = Deposit, Negative no = Withdraw ")
-                newTransactionList[transactionIndex] = s.nextInt();
+                System.out.println("Positive no = Deposit, Negative no = Withdraw ");
+                double tempTransaction = s.nextDouble();
+                newTransactionList.add(tempTransaction);
                 
+                System.out.println("Would you like to add another transaction?");
+                System.out.println("Y/N?");
                 whileChoice = s.next().toLowerCase().charAt(0);
                 
                 while(whileChoice == 'y'){
-                System.out.println("Please enter the surname of the User: ");
-                newUserSurname = s.next();
-                System.out.println("Would you like to add another transaction?: ");
+                System.out.println("Please enter your transaction: ");
+                System.out.println("Positive no = Deposit, Negative no = Withdraw ");
+                tempTransaction = s.nextDouble();
+                newTransactionList.add(tempTransaction);
+                
+                System.out.println("Would you like to add another transaction?");
                 System.out.println("Y/N?");
                 whileChoice = s.next().toLowerCase().charAt(0);
                 }
                 
-                User "newUserFirstName+transactionIndex" = new User(newUserFirstName, newUserSurname, simAccount, userTransactions[3]);
+                User newUser = new User(newUserFirstName, newUserSurname, simAccount, newTransactionList);
                 
+                //System.out.println("User Account " + newUserFirstName + " " + newUserSurname + " created successfully.");
+                
+                userThread = new transactionRun(newUser);
                 System.out.println("User Account " + newUserFirstName + " " + newUserSurname + " created successfully.");
+                transactionThreads.add(userThread);
                 
-                break;*/
+                break;
                 
         }
         Menu();
@@ -208,9 +250,11 @@ public class CCE2050_CW2 extends Thread{
             case '2':
                 System.out.println("Please enter a 9 digit Bank Account Number: ");
                 newAcctNo = s.nextLong();
+                simAccount.setAccountNo(newAcctNo);
                 
                 System.out.println("Please enter Bank Account Balance: ");
                 newAcctBal = s.nextDouble();
+                simAccount.setAccountBalance(newAcctBal);
                 
                 System.out.println("Bank Account with Account No. " + newAcctNo + " containing " + newAcctBal + " created successfully.");
                 
