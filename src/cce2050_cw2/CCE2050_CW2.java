@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.*;
 /**
  *
  * @author Joseph
@@ -21,7 +22,8 @@ public class CCE2050_CW2 extends Thread{
    static transactionRun saulGoodmanThread;
    static transactionRun walterWhiteThread;
    static transactionRun jessiePinkmanThread;
-   static transactionRun hankSchraderThread; 
+   static transactionRun hankSchraderThread;
+   static ExecutorService exec = Executors.newCachedThreadPool();
    /*static double[] userTransactions[] = {
        {50,10,-20,10,-20,20,10,50,-10,10,-10,50},
        {20,20,-20,50,-20,10,50,50,-20,10,10},
@@ -47,14 +49,10 @@ public class CCE2050_CW2 extends Thread{
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        //
-        //saulTransactions.add(50);
-        //
-
         
-        while(true){
+        
         Menu();
-        }
+        
         
     }
     
@@ -62,20 +60,22 @@ public class CCE2050_CW2 extends Thread{
         
         char choice1;
         
+        System.out.println("------------------------------Bank Menu------------------------------");
         System.out.println("Enter the number of the action you wish to perform:");
         System.out.println("1. Create Bank Account");
         System.out.println("2. Create User");
-        System.out.println("3. Run Simulation");
+        System.out.println("3. Run Simulation (Press M then Enter to go back to the Main Menu once trasactions are complete)");
         System.out.println("4. Exit");
         
-        choice1 = s.next().charAt(0);
+        
+        choice1 = s.next().toLowerCase().charAt(0);
         System.out.println(choice1);
         
         
         switch(choice1){
             case '1':
                 createBankAccount();
-                Menu();
+                //Menu();
                 break;
             
             case '2':
@@ -84,28 +84,27 @@ public class CCE2050_CW2 extends Thread{
             
             case '3':
                 
-                //saulGoodmanThread.start();
-                //walterWhiteThread.start();
-                //jessiePinkmanThread.start();
-                //hankSchraderThread.start();
+                System.out.println("Initial bank balance is: " + simAccount.getAccountBalance());
                 
-                //Menu();
-                for (transactionRun tThread : transactionThreads){
+                if(transactionThreads.isEmpty()){
+                    System.out.println("No users found. Please create users first.\n");
+                    Menu();
+                } else{
+                
+                    for (transactionRun tThread : transactionThreads){
                     
-                    tThread.start();
-                    while (true) {
-                        try {
-                            tThread.join();
-                            break;
-                        } catch (InterruptedException e) {
-                                e.printStackTrace();
-                        }
+                    exec.submit(tThread);
+                    
+                    }
                 }
-                }
-                        Menu();
+                break;
+                        
                 
             case '4':
                 System.exit(0);
+                
+            case 'm':
+                Menu();
         }   
         
         Menu();
@@ -132,6 +131,7 @@ public class CCE2050_CW2 extends Thread{
                 System.out.println("3. Create Jessie Pinkman");
                 System.out.println("4. Create Hank Schrader");
                 System.out.println("5. Create All");
+                System.out.println("6. Return to Create User Menu");
                 
                 ch3 = s.next().charAt(0);
                 
@@ -169,11 +169,34 @@ public class CCE2050_CW2 extends Thread{
                         transactionThreads.add(hankSchraderThread);
                         break;
                     
-                    //case '5':
+                    case '5':
                         
+                        sGoodman = new User("Saul", "Goodman", simAccount, saulTransactions);
+                        saulGoodmanThread = new transactionRun(sGoodman);
+                        System.out.println("User " + sGoodman.getName() + " " + sGoodman.getSurname() + " has been created successfully" + "\n");
+                        transactionThreads.add(saulGoodmanThread);
+                        
+                        wWhite = new User("Walter", "White", simAccount, walterTransactions);
+                        walterWhiteThread = new transactionRun(wWhite);
+                        System.out.println("User " + wWhite.getName() + " " + wWhite.getSurname() + " has been created successfully" + "\n");
+                        transactionThreads.add(walterWhiteThread);
+                        
+                        jPinkman = new User("Jessie", "Pinkman", simAccount, jessieTransactions);
+                        jessiePinkmanThread = new transactionRun(jPinkman);
+                        System.out.println("User " + jPinkman.getName() + " " + jPinkman.getSurname() + " has been created successfully" + "\n");
+                        transactionThreads.add(jessiePinkmanThread);
+                        
+                        hSchrader = new User("Hank", "Schrader", simAccount, hankTransactions);
+                        hankSchraderThread = new transactionRun(hSchrader);
+                        System.out.println("User " + hSchrader.getName() + " " + hSchrader.getSurname() + " has been created successfully" + "\n");
+                        transactionThreads.add(hankSchraderThread);
+                        
+                        break;
+                    
+                    case '6':
+                        createUser();
                 }
-                
-                createUser();
+                break;
                 
             
             case '2':
@@ -242,7 +265,7 @@ public class CCE2050_CW2 extends Thread{
             
             case '1':
                 simAccount.createAccount();
-                System.out.println("Bank Account successfully created");
+                System.out.println("Bank Account successfully created\n");
                 
                 break;
                 
@@ -256,7 +279,7 @@ public class CCE2050_CW2 extends Thread{
                 newAcctBal = s.nextDouble();
                 simAccount.setAccountBalance(newAcctBal);
                 
-                System.out.println("Bank Account with Account No. " + newAcctNo + " containing " + newAcctBal + " created successfully.");
+                System.out.println("Bank Account with Account No. " + newAcctNo + " containing " + newAcctBal + " created successfully.\n");
                 
                 break;
                 
