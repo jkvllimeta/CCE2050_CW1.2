@@ -105,11 +105,17 @@ public class CCE2050_CW2 extends Thread{
                 
             case 'm':
                 Menu();
+                
+            default:
+                Menu();
         }   
         
         Menu();
         
     }
+    
+    
+    /*Menu developed for creating preset and custom users*/
     
     public static void createUser(){
         
@@ -124,6 +130,8 @@ public class CCE2050_CW2 extends Thread{
         ch2 = s.next().charAt(0);
         
         switch(ch2){
+            
+            //Submenu for creating preset users
             case '1':
                 System.out.println("Choose the accounts you wish to create");
                 System.out.println("1. Create Saul Goodman");
@@ -198,7 +206,7 @@ public class CCE2050_CW2 extends Thread{
                 }
                 break;
                 
-            
+            //Custom user submenu
             case '2':
                 int transactionIndex = 0;
                 String newUserFirstName;
@@ -235,19 +243,22 @@ public class CCE2050_CW2 extends Thread{
                 
                 User newUser = new User(newUserFirstName, newUserSurname, simAccount, newTransactionList);
                 
-                //System.out.println("User Account " + newUserFirstName + " " + newUserSurname + " created successfully.");
-                
                 userThread = new transactionRun(newUser);
                 System.out.println("User Account " + newUserFirstName + " " + newUserSurname + " created successfully.");
                 transactionThreads.add(userThread);
                 
                 break;
+            
+            default:
+                createUser();
                 
         }
         Menu();
     }
     
     public static void createBankAccount(){
+        
+        //Bank Account initial balance is zero
         
         long newAcctNo;
         double newAcctBal;
@@ -271,7 +282,7 @@ public class CCE2050_CW2 extends Thread{
                 
                 
             case '2':
-                System.out.println("Please enter a 9 digit Bank Account Number: ");
+                System.out.println("Please enter a Bank Account Number: ");
                 newAcctNo = s.nextLong();
                 simAccount.setAccountNo(newAcctNo);
                 
@@ -289,6 +300,9 @@ public class CCE2050_CW2 extends Thread{
                 
             case '4':
                 System.exit(0);
+                
+            default:
+                createBankAccount();
                 
         }
             
